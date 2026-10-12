@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --page: #faf9f7;
+  --ink: #1a1a1f;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--page);
+    color: var(--ink);
+    @apply font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* In Bangla mode every element uses the Bangla font so no glyph ever falls
+     back to a system font (which is what made Bangla look broken). */
+  html[lang="bn"] body,
+  html[lang="bn"] .font-serif {
+    font-family: var(--font-bangla), var(--font-sans), system-ui, sans-serif;
+  }
+  /* But keep Arabic text on the Arabic font regardless of UI language. */
+  html[lang="bn"] .font-arabic {
+    font-family: var(--font-arabic), var(--font-arabic-display), serif;
+  }
+
+  ::selection {
+    background: rgba(183, 143, 92, 0.25);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(183, 143, 92, 0.7);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card-surface {
+    @apply rounded-xl2 border border-ink-100 bg-white shadow-soft;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-ink-900 text-white hover:bg-ink-800 active:bg-ink-950;
+  }
+  .btn-secondary {
+    @apply btn border border-ink-200 bg-white text-ink-800 hover:border-ink-300 hover:bg-ink-50;
+  }
+  .btn-ghost {
+    @apply btn text-ink-600 hover:bg-ink-100 hover:text-ink-900;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-3.5 py-2 text-xs font-medium text-ink-600 transition hover:border-ink-300 hover:text-ink-900 sm:py-1.5;
+  }
+  .chip-active {
+    @apply border-ink-900 bg-ink-900 text-white hover:border-ink-900 hover:text-white;
+  }
+  .input {
+    @apply w-full rounded-xl border border-ink-200 bg-white px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-400
+      focus:border-sand-400 focus:outline-none focus:ring-2 focus:ring-sand-200;
+  }
+  .label {
+    @apply text-[13px] font-semibold uppercase tracking-[0.14em] text-ink-500;
+  }
+}
+
+@layer utilities {
+  .arabic {
+    direction: rtl;
+    unicode-bidi: isolate;
+    text-align: right;
+    font-feature-settings: "liga" 1, "calt" 1;
+    line-height: 1.9;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shimmer {
+    background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0.04) 20%,
+      rgba(0, 0, 0, 0.06) 60%,
+      rgba(0, 0, 0, 0)
+    );
+    background-size: 400px 100%;
+    background-repeat: no-repeat;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Photocard export surface — keep backgrounds exact when rasterising. */
+.card-surface-render {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
